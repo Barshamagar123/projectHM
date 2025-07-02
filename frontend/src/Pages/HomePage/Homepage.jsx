@@ -9,8 +9,11 @@ import GallerySection from '../../Components/GallerySection/GallerySection'
 import EventsSection from '../../Components/EventsSection/EventsSection'
 import TestimonialsSection from '../../Components/TestimonialsSection/TestimonialsSection'
 import Footer from '../../Components/Common/Footer/Footer'
+import CTASection from '../../Components/CTASection/CTASection'
 
 const Homepage = () => {
+// const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+//  const [scrolled, setScrolled] = useState(false);
   return (
 
     <>
@@ -23,6 +26,7 @@ const Homepage = () => {
     <GallerySection />
     <EventsSection />
     <TestimonialsSection />
+    <CTASection />
     <Footer />
 
 

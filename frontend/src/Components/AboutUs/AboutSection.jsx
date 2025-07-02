@@ -1,5 +1,7 @@
 import React from "react";
 
+import INC from "../../assets/INC.jpg"
+
 
 const AboutSection = () => {
   return (
@@ -52,7 +54,7 @@ const AboutSection = () => {
         </div>
         
         <div className="flex justify-center">
-          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" 
+          <img src={INC} 
                alt="College Building" 
                className="rounded-xl shadow-lg w-full max-w-md hover:shadow-xl transition-shadow duration-300" />
         </div>

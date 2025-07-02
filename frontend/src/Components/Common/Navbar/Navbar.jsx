@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiPhone, FiMail, FiClock, FiFacebook, FiTwitter, FiInstagram, FiUser, FiLogIn } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import logo from "../../../assets/LOGO.jpg"
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -89,19 +90,21 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
             {/* Logo */}
-            <div className="flex-shrink-0 flex items-center">
-              <Link to="/" className="flex items-center">
-                <div className="bg-blue-700 text-white rounded-lg p-2 mr-3">
-                  <span className="font-bold text-xl">IN</span>
-                </div>
-                <div>
-                  <span className="text-xl font-bold text-gray-800">Itahari Namuna College</span>
-                  <span className="block text-xs text-gray-500">Hotel Management</span>
-                </div>
-              </Link>
-            </div>
-            
-            {/* Desktop Menu */}
+                        <div className="flex-shrink-0 flex items-center">
+                          <Link to="/" className="flex items-center">
+                            <img
+                              src={logo}
+                              alt="Itahari Namuna College Logo"
+                              className="h-12 w-12 object-cover rounded-lg mr-3 bg-blue-700"
+                            />
+                            <div>
+                              <span className="text-xl font-bold text-gray-800">Itahari Namuna College</span>
+                              <span className="block text-xs text-gray-500">Hotel Management</span>
+                            </div>
+                          </Link>
+                        </div>
+                        
+                        {/* Desktop Menu */}
             <div className="hidden lg:ml-6 lg:flex lg:items-center lg:space-x-1">
               <Link 
                 to="/" 

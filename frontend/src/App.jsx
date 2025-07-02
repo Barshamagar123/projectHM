@@ -3,6 +3,7 @@ import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './Components/Common/Navbar/Navbar'
 import Homepage from './Pages/HomePage/Homepage'
+import StudentDashboard from './Pages/StudentDashboardpage/StudentDashboard'
 
 const App = () => {
   return (
@@ -11,7 +12,7 @@ const App = () => {
     <Routes>
 
       <Route path='/' element={<Homepage />} />
-     
+      <Route path="/studentdashboard" element={<StudentDashboard />} />     
     </Routes>
     </BrowserRouter>
     </>

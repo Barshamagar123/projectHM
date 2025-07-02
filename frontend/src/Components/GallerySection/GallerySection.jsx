@@ -1,11 +1,15 @@
 import React from "react";
+import gallery1 from "../../assets/Gallery1.jpg"
+import gallery2 from "../../assets/gallery2.jpg"
+import gallery3 from "../../assets/gallery3.jpg"
+import gallery4 from "../../assets/gallery4.jpg"
 
 const GallerySection = () => {
   const galleryImages = [
-    { src: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80", alt: "Gallery 1" },
-    { src: "https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=400&q=80", alt: "Gallery 2" },
-    { src: "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=400&q=80", alt: "Gallery 3" },
-    { src: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80", alt: "Gallery 4" }
+    { src: gallery1, alt: "Gallery 1" },
+    { src: gallery2, alt: "Gallery 2" },
+    { src: gallery3, alt: "Gallery 3" },
+    { src: gallery4, alt: "Gallery 4" }
   ];
 
   return (
