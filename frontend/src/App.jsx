@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './Components/Common/Navbar/Navbar'
 import Homepage from './Pages/HomePage/Homepage'
 import StudentDashboard from './Pages/StudentDashboardpage/StudentDashboard'
+import RegisterPage from './Components/Form/RegisterPage'
 
 const App = () => {
   return (
@@ -12,7 +13,8 @@ const App = () => {
     <Routes>
 
       <Route path='/' element={<Homepage />} />
-      <Route path="/studentdashboard" element={<StudentDashboard />} />     
+      <Route path="/studentdashboard" element={<StudentDashboard />} /> 
+      <Route path='/register'  element={<RegisterPage />} />   
     </Routes>
     </BrowserRouter>
     </>

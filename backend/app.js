@@ -1,9 +1,24 @@
-const express=require('express')
-const app=express()
-app.set("view engine","ejs")
+import express from "express";
+import dotenv from "dotenv";
+import { connectDB } from "./database/db.js";
+const app=express();
+dotenv.config();
+// Connect to MongoDB
+connectDB();
+
+
+
+
 app.get("/",(request,response)=>{
-    response.render("home.ejs")
+    response.send("Hello World")
 })
-app.listen(4000,(request,response)=>{
-    console.log("backend has started at port number 4000")
+
+
+
+const PORT=process.env.PORT || 5002;
+
+app.listen(PORT,()=>{
+    console.log(`Server is running on port ${PORT}`);
 })
+
+
