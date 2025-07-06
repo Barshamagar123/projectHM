@@ -1,60 +1,19 @@
 import mongoose from 'mongoose';
 
-const registerSchema = new mongoose.Schema(
-  {
-    id:{
-        type: mongoose.Schema.Types.ObjectId,
-        auto: true,
-        unique: true,
-      
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    birth: {
-      type: Date,
-      required: true,
-    },
-    gender: {
-      type: String,
-      enum: ['male', 'female', 'others'],
-      required: true,
-    },
-    address: {
-      type: String,
-    },
-    phone: {
-      type: String,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    role: {
-      type: String,
-      enum: ['student', 'teacher', 'admin'],
-      default: 'student',
-    },
-    education: {
-      type: String,
-      enum: ['slc', 'plus2', 'bachelor', 'master'],
-    },
-    program: {
-      type: String,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+const userSchema = new mongoose.Schema({
+    name: String,
+    email: { type: String, required: true, unique: true },
+    password: String,
+    role: { type: String, enum: ['admin', 'teacher', 'student'], default: 'student' },
 
-const Register = mongoose.model('Register', registerSchema);
+    // 🔐 Lockout fields
+    loginAttempts: { type: Number, default: 0 },
+    lockUntil: { type: Date }
+});
 
-export default Register;
+// 🔐 Virtual field to check if user is currently locked
+userSchema.virtual('isLocked').get(function () {
+    return !!(this.lockUntil && this.lockUntil > Date.now());
+});
+
+export default mongoose.model('User', userSchema);

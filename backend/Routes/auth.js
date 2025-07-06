@@ -1,13 +1,15 @@
 import express, { Router } from "express"
 import asyncHandler from "express-async-handler" 
-import { signup } from "../Controllers/auth.js";
+import { login, signup } from "../Controllers/auth.js";
 
 
 
 
-const authRoutes =express.Router();
+const authRoutes =Router();
 
-authRoutes.get("/signup",asyncHandler(signup))
+// Route for user signup
+authRoutes.post("/signup", asyncHandler(signup));
+authRoutes.post("/login",asyncHandler(login))
 
 
 

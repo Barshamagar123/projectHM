@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
   const navItems = [
-    { icon: 'fa-tachometer-alt', label: 'Dashboard', path: '/admin' },
+    { icon: 'fa-tachometer-alt', label: 'Dashboard', path: '/admin/dashboard' },
     { icon: 'fa-bullhorn', label: 'Notices/News/Events', path: '/admin/notices' },
     { icon: 'fa-chalkboard-teacher', label: 'Faculty Members', path: '/admin/faculty' },
     { icon: 'fa-calendar-alt', label: 'Class Schedules', path: '/admin/schedules' },

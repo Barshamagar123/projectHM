@@ -1,24 +1,67 @@
 import React from 'react'
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+
 import Navbar from './Components/Common/Navbar/Navbar'
 import Homepage from './Pages/HomePage/Homepage'
 import StudentDashboard from './Pages/StudentDashboardpage/StudentDashboard'
-import RegisterPage from './Components/Form/RegisterPage'
+
 import AdminDashboard from './Pages/AdminDashboard/AdminDashboard'
+import Notices from './Components/Adashboard/Layout/Notices'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Gallery from './Components/Adashboard/Layout/Gallery'
+import NoticeForm from './Components/Adashboard/Layout/NoticeForm'
+import Dashboard from './Components/Adashboard/Dashboard/Dashboard'
+import {Toaster} from 'react-hot-toast';
+import Register from './Components/Form/Register'
+
 
 const App = () => {
+  
+ 
+  const router = createBrowserRouter ([
+    <Toaster />,
+    {
+      path:"/",
+      element:<Homepage />,
+    },
+    {
+      path:"/student",
+      element:<StudentDashboard />
+    },
+    {
+      path:"/register",
+      element:<Register />
+    },
+    {
+      path:"/admin",
+      element:<AdminDashboard />,
+      children:[
+        {
+          path:"/admin/dashboard",
+          element:<Dashboard />
+
+        },
+        {
+          path:"/admin/notices",
+          element:<Notices />
+        },
+        {
+          path:"/admin/gallery",
+          element:<Gallery  />
+        },
+        {
+          path:"/admin/formnotices",
+          element:<NoticeForm   />
+        }
+       
+      ]
+    }
+  ])
+
   return (
     <>
-    <BrowserRouter>
-    <Routes>
-
-      <Route path='/' element={<Homepage />} />
-      <Route path="/studentdashboard" element={<StudentDashboard />} /> 
-      <Route path='/admin' element={<AdminDashboard />} />
-      <Route path='/register'  element={<RegisterPage />} />   
-    </Routes>
-    </BrowserRouter>
+    <RouterProvider router={router}/>
+   
     </>
    
   )

@@ -1,8 +1,9 @@
 import React from 'react'
 import Sidebar from '../../Components/Adashboard/Layout/Sidebar'
 import Header from '../../Components/Adashboard/Header/Header'
-import Dashboard from '../../Components/Adashboard/Dashboard/AdminDashboard'
 import { useState } from 'react'
+import { Outlet } from 'react-router-dom'
+
 
 const AdminDashboard = () => {
      const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -16,7 +17,9 @@ const AdminDashboard = () => {
         <Sidebar mobileSidebarOpen={mobileSidebarOpen} toggleSidebar={toggleSidebar} />
         <div className="flex flex-col flex-1 overflow-hidden">
           <Header toggleSidebar={toggleSidebar} />
-          <Dashboard />
+          <Outlet />
+          
+         
         </div>
       </div>
     </>
