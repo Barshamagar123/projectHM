@@ -5,20 +5,25 @@ import User from '../Models/userModel.js';
 import { JWT_SECRET } from '../sercrets.js';
 
 export const signup = async (req, res) => {
-   
+    console.log("Signup request received:", req.body);
+    
     try {
         const { name, email, password, role } = req.body;
 
         if (!name || !email || !password || !role) {
+            console.log("Missing required fields:", { name: !!name, email: !!email, password: !!password, role: !!role });
             return res.status(400).json({ message: "All fields are required" });
         }
 
+        console.log("Checking for existing user with email:", email);
         const existingUser = await User.findOne({ email });
 
         if (existingUser) {
+            console.log("User already exists with email:", email);
             return res.status(400).json({ message: "User already exists" });
         }
 
+        console.log("Creating new user...");
         const user = await User.create({
             name,
             email,
@@ -26,10 +31,11 @@ export const signup = async (req, res) => {
             role: role === "admin" || role === "teacher" ? role : "student"
         });
 
+        console.log("User created successfully:", { id: user._id, email: user.email, role: user.role });
         res.status(201).json({ status: true, message: "User created successfully", user });
     } catch (error) {
-        console.error("Signup Error:", error);
-        res.status(500).json({ message: "Internal server error" });
+        console.error("Signup Error:", error.message, error.stack);
+        res.status(500).json({ message: "Internal server error", error: error.message });
     }
 };
 

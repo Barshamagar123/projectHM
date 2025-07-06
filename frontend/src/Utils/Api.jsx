@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const instance=axios.create({
+const instance = axios.create({
     baseURL:"http://localhost:5002",
     headers: {
         'Content-Type': 'application/json',
@@ -17,21 +17,41 @@ export const deleteUser= (url) => instance.delete(url);
 
 
 // Add a request interceptor
-instance.interceptors.request.use(function (config) {
-    // Do something before request is sent
-    return config;
-  }, function (error) {
-    // Do something with request error
-    return Promise.reject(error);
-  });
+instance.interceptors.request.use(
+    function (config) {
+        // Get token from localStorage or Redux store
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        
+        return config;
+    },
+    function (error) {
+        return Promise.reject(error);
+    }
+);
 
 // Add a response interceptor
-instance.interceptors.response.use(function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    return response;
-  }, function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-    return Promise.reject(error);
-  });
+instance.interceptors.response.use(
+    function (response) {
+        // Store token if it's in the response
+        if (response.data && response.data.token) {
+            localStorage.setItem('token', response.data.token);
+        }
+        return response;
+    },
+    function (error) {
+        // Handle 401 errors (unauthorized)
+        if (error.response && error.response.status === 401) {
+            // Clear token and redirect to login
+            localStorage.removeItem('token');
+            sessionStorage.removeItem('token');
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
+
+export default instance;

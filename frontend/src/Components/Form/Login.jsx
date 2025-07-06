@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { registerUser, clearError } from '../../Redux/AuthSlice.jsx';
+import { loginUser, clearError } from '../../Redux/AuthSlice.jsx';
 import { toast } from 'react-hot-toast';
 
-const Register = () => {
+const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
+  const { loading, error, isAuthenticated, user } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     password: ''
   });
@@ -22,13 +21,25 @@ const Register = () => {
     dispatch(clearError());
   }, [dispatch]);
 
-  // Navigate to dashboard if already authenticated
+  // Navigate to appropriate dashboard if already authenticated and has user data
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/login');
-      
+    if (isAuthenticated && user) {
+      // Redirect based on user role
+      switch (user.role) {
+        case 'admin':
+          navigate('/admin/dashboard');
+          break;
+        case 'teacher':
+          navigate('/teacher/dashboard');
+          break;
+        case 'student':
+          navigate('/student/dashboard');
+          break;
+        default:
+          navigate('/');
+      }
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   // Show error toast when error occurs
   useEffect(() => {
@@ -40,12 +51,6 @@ const Register = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
-    } else if (formData.name.trim().length < 2) {
-      newErrors.name = 'Name must be at least 2 characters';
-    }
-
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -54,8 +59,6 @@ const Register = () => {
 
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
     }
 
     setErrors(newErrors);
@@ -85,19 +88,21 @@ const Register = () => {
       return;
     }
 
-    const userData = {
-      name: formData.name.trim(),
+    const credentials = {
       email: formData.email.trim(),
-      password: formData.password,
-      role: 'student' // Default role is always student for frontend registration
+      password: formData.password
     };
 
-    const result = await dispatch(registerUser(userData));
+    const result = await dispatch(loginUser(credentials));
     
-    if (registerUser.fulfilled.match(result)) {
-      toast.success('Registration successful!');
-      navigate('/login');
-    
+    if (loginUser.fulfilled.match(result)) {
+      toast.success('Login successful!');
+      // Direct navigation after login
+      const role = result.payload?.user?.role;
+      if (role === 'admin') navigate('/admin/dashboard');
+      else if (role === 'teacher') navigate('/teacher/dashboard');
+      else if (role === 'student') navigate('/student/dashboard');
+      else navigate('/');
     }
   };
 
@@ -107,41 +112,19 @@ const Register = () => {
         <div>
           <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-indigo-100">
             <svg className="h-8 w-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
             </svg>
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create your account
+            Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Join our student community today
+            Welcome back! Please sign in to continue
           </p>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
-            {/* Name Field */}
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                Full Name
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                className={`appearance-none relative block w-full px-3 py-2 border ${
-                  errors.name ? 'border-red-300' : 'border-gray-300'
-                } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
-                placeholder="Enter your full name"
-                value={formData.name}
-                onChange={handleInputChange}
-              />
-              {errors.name && (
-                <p className="mt-1 text-sm text-red-600">{errors.name}</p>
-              )}
-            </div>
-
             {/* Email Field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -174,7 +157,7 @@ const Register = () => {
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="new-password"
+                autoComplete="current-password"
                 required
                 className={`appearance-none relative block w-full px-3 py-2 border ${
                   errors.password ? 'border-red-300' : 'border-gray-300'
@@ -205,23 +188,23 @@ const Register = () => {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Creating Account...
+                  Signing in...
                 </div>
               ) : (
-                'Create Student Account'
+                'Sign in'
               )}
             </button>
           </div>
 
           <div className="text-center">
             <p className="text-sm text-gray-600">
-              Already have an account?{' '}
+              Don't have an account?{' '}
               <button
                 type="button"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/register')}
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
-                Sign in here
+                Sign up here
               </button>
             </p>
           </div>
@@ -231,4 +214,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login; 
