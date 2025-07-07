@@ -98,10 +98,19 @@ export const login = async (req, res) => {
             maxAge: 30 * 24 * 60 * 60 * 1000
         });
 
+        // Return user data without password
+        const userData = {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role
+        };
+
         return res.status(200).json({
             status: true,
             message: "Login successful",
-            token
+            token,
+            user: userData
         });
 
     } catch (error) {

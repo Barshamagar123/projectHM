@@ -4,12 +4,13 @@ import { NavLink } from 'react-router-dom';
 const Sidebar = () => {
   const navItems = [
     { icon: 'fa-tachometer-alt', label: 'Dashboard', path: '/admin/dashboard' },
-    { icon: 'fa-bullhorn', label: 'Notices/News/Events', path: '/admin/notices' },
+    { icon: 'fa-bullhorn', label: 'Notices/News/Events', path: 'notices' },
     { icon: 'fa-chalkboard-teacher', label: 'Faculty Members', path: '/admin/faculty' },
     { icon: 'fa-calendar-alt', label: 'Class Schedules', path: '/admin/schedules' },
-    { icon: 'fa-images', label: 'Gallery', path: '/admin/gallery' },
+    { icon: 'fa-images', label: 'Gallery', path: 'gallery' },
     { icon: 'fa-chart-pie', label: 'Analytics', path: '/admin/analytics' },
-    { icon: 'fa-file-export', label: 'Export Tools', path: '/admin/exports' }
+    { icon: 'fa-file-export', label: 'Export Tools', path: '/admin/exports' },
+    { icon: 'fa-sign-out-alt', label: 'Logout', path: '/logout' }
   ];
 
   return (

@@ -27,9 +27,10 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
       case 'admin':
         return <Navigate to="/admin/dashboard" replace />;
       case 'teacher':
-        return <Navigate to="/teacher/dashboard" replace />;
+        // Teacher dashboard not implemented yet, redirect to home
+        return <Navigate to="/" replace />;
       case 'student':
-        return <Navigate to="/student" replace />;
+        return <Navigate to="/student/dashboard" replace />;
       default:
         return <Navigate to="/" replace />;
     }

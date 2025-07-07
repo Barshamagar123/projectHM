@@ -20,6 +20,7 @@ const Sidebar = () => {
     { icon: 'fa-briefcase', label: 'Internship Log', path: '/internship' },
     { icon: 'fa-book', label: 'Library', path: '/library' },
     { icon: 'fa-envelope', label: 'Letters', path: '/letters' },
+    { icon: 'fa-sign-out-alt', label: 'Logout', path: '/logout' },
   ];
 
   return (

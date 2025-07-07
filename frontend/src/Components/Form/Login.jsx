@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginUser, clearError } from '../../Redux/AuthSlice.jsx';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '../../Utils/useAuth.jsx';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error, isAuthenticated, user } = useSelector((state) => state.auth);
+  const { logout } = useAuth();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -30,7 +32,9 @@ const Login = () => {
           navigate('/admin/dashboard');
           break;
         case 'teacher':
-          navigate('/teacher/dashboard');
+          // Teacher dashboard not implemented yet, redirect to home
+          toast.info('Teacher dashboard coming soon! Redirecting to home page.');
+          navigate('/');
           break;
         case 'student':
           navigate('/student/dashboard');
@@ -93,18 +97,44 @@ const Login = () => {
       password: formData.password
     };
 
+    console.log('Attempting login with:', { email: credentials.email });
+
     const result = await dispatch(loginUser(credentials));
     
     if (loginUser.fulfilled.match(result)) {
+      console.log('Login successful:', result.payload);
       toast.success('Login successful!');
       // Direct navigation after login
       const role = result.payload?.user?.role;
       if (role === 'admin') navigate('/admin/dashboard');
-      else if (role === 'teacher') navigate('/teacher/dashboard');
+      else if (role === 'teacher') {
+        // Teacher dashboard not implemented yet, redirect to home
+        toast.info('Teacher dashboard coming soon! Redirecting to home page.');
+        navigate('/');
+      }
       else if (role === 'student') navigate('/student/dashboard');
       else navigate('/');
+    } else if (loginUser.rejected.match(result)) {
+      console.error('Login failed:', result.error);
     }
   };
+
+  // Show a logout and switch account option if already authenticated
+  if (isAuthenticated && user) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <h2 className="text-xl font-bold mb-4">
+          You are already logged in as {user.email} ({user.role})
+        </h2>
+        <button
+          onClick={logout}
+          className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+        >
+          Log out and switch account
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

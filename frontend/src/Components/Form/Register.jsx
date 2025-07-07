@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { registerUser, clearError } from '../../Redux/AuthSlice.jsx';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '../../Utils/useAuth.jsx';
 
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, logout } = useAuth();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -100,6 +102,23 @@ const Register = () => {
     
     }
   };
+
+  // Show a logout and switch account option if already authenticated
+  if (isAuthenticated && user) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <h2 className="text-xl font-bold mb-4">
+          You are already logged in as {user.email} ({user.role})
+        </h2>
+        <button
+          onClick={logout}
+          className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+        >
+          Log out and switch account
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

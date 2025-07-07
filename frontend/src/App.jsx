@@ -13,6 +13,7 @@ import Dashboard from './Components/Adashboard/Dashboard/Dashboard'
 import Register from './Components/Form/Register'
 import Login from './Components/Form/Login'
 import ProtectedRoute from './Components/Common/ProtectedRoute'
+import Logout from './Components/Common/Logout'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -29,6 +30,10 @@ const App = () => {
       element: <Register />,
     },
     {
+      path: "/logout",
+      element: <Logout />,
+    },
+    {
       path: "/student/dashboard",
       element: (
         <ProtectedRoute allowedRoles={['student']}>
@@ -37,7 +42,7 @@ const App = () => {
       )
     },
     {
-      path: "/admin",
+      path: "/admin/dashboard",
       element: (
         <ProtectedRoute allowedRoles={['admin']}>
           <AdminDashboard />
@@ -45,19 +50,19 @@ const App = () => {
       ),
       children: [
         {
-          path: "/admin/dashboard",
+          index: true,
           element: <Dashboard />
         },
         {
-          path: "/admin/notices",
+          path: "notices",
           element: <Notices />
         },
         {
-          path: "/admin/gallery",
+          path: "gallery",
           element: <Gallery />
         },
         {
-          path: "/admin/formnotices",
+          path: "formnotices",
           element: <NoticeForm />
         }
       ]
